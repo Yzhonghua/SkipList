@@ -17,5 +17,7 @@ int main() {
     // 展示跳表
     skiplist.display_list();
 
+    skiplist.full_display_list();
+
     return 0;
 }
