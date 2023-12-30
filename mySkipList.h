@@ -68,7 +68,7 @@ public:
     // read data from a file
     bool load_from_file(const std::string& filename);
     // clear current skiplist
-    bool clear();
+    void clear();
 
 };
 
@@ -237,5 +237,20 @@ bool SkipList<K, V>::load_from_file(const std::string& filename) {
     }
 }
 
+template<typename K, typename V>
+void SkipList<K, V>::clear() {
+    Node<K, V>* current = header->forward[0];
+    while (current != nullptr) {
+        Node<K, V>* next = current->forward[0];
+        delete current;
+        current = next;
+    }
+
+    // reset the header's forward pointers
+    header->forward = std::vector<Node<K, V>*>(maxLevel + 1, nullptr);
+
+    level = 0;
+    size = 0;
+}
 
 #endif /* MYSKIPLIST_H */
