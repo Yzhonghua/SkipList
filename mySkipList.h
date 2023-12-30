@@ -122,9 +122,9 @@ bool SkipList<K, V>::delete_element(K key) {
     }
 
     // update pointers and delete the node
-    for (int i = 0; i <= level; --i) {
-        if (update[i]->forward != current) {
-            break;
+    for (int i = level; i >= 0; --i) {
+        if (update[i]->forward[i] != current) {
+            continue;
         }
         update[i]->forward[i] = current->forward[i];
     }

@@ -7,14 +7,25 @@ int main() {
     // 创建一个最大层数为 5 的跳表实例
     SkipList<int, std::string> skiplist(5, 0.5);
 
-    // 插入一些键值对
+    // insert some elements
     skiplist.insert_element(1, "One");
     skiplist.insert_element(3, "Three");
     skiplist.insert_element(7, "Seven");
     skiplist.insert_element(5, "Five");
     skiplist.insert_element(9, "Nine");
 
-    // 展示跳表
+    // two ways to display
+    skiplist.display_list();
+
+    skiplist.full_display_list();
+
+    std::cout << "DELETE" << std::endl;
+
+    // delete some elements
+    skiplist.delete_element(7);
+    skiplist.delete_element(3);
+
+    // two ways to display
     skiplist.display_list();
 
     skiplist.full_display_list();
