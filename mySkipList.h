@@ -5,6 +5,9 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 template<typename K, typename V>
 class Node {
@@ -60,6 +63,12 @@ public:
     void display_list() const;
     // display every list we have, including the full list
     void full_display_list() const;
+    // store data into a file
+    bool save_to_file(const std::string& filename);
+    // read data from a file
+    bool load_from_file(const std::string& filename);
+    // clear current skiplist
+    bool clear();
 
 };
 
@@ -167,6 +176,64 @@ void SkipList<K, V>::full_display_list() const {
             }
         }
         std::cout << std::endl;
+    }
+}
+
+template<typename K, typename V>
+bool SkipList<K, V>::save_to_file(const std::string& filename) {
+    fs::path directory = "data";
+
+    // make sure the given path exists
+    if (!fs::exists(directory)) {
+        if (!fs::create_directory(directory)) {
+            std::cerr << "Path doesn't exist or can't be create: " << directory << std::endl;
+            return false;
+        }
+    }
+
+    fs::path file_path = directory / filename;
+
+    // open the file
+    std::ofstream file_out(file_path);
+    if (!file_out) {
+        std::cerr << "Unable to open file for writing: " << file_path << std::endl;
+        return false;
+    }
+
+    // input the data
+    Node<K, V>* node = header->forward[0];
+    while (node != nullptr) {
+        file_out << node->key << " " << node->value << "\n";
+        node = node->forward[0];
+    }
+
+    file_out.close();
+    return true;
+}
+
+template<typename K, typename V>
+bool SkipList<K, V>::load_from_file(const std::string& filename) {
+    fs::path directory = "data";
+    fs::path file_path = directory / filename;
+
+    // open the file
+    std::ifstream file_in(file_path);
+    if (!file_in) {
+        std::cerr << "Unable to open file for reading: " << file_path << std::endl;
+        return false;
+    }
+
+    // clear current skiplist
+    this->clear();
+
+    // read and insert
+    K key;
+    V value;
+    while (file_in >> key >> value) {
+        this->insert_element(key, value);
+
+        file_in.close();
+        return true;
     }
 }
 

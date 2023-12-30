@@ -19,16 +19,17 @@ int main() {
 
     skiplist.full_display_list();
 
-    std::cout << "DELETE" << std::endl;
+    skiplist.save_to_file("data.txt");
+    // std::cout << "DELETE" << std::endl;
 
-    // delete some elements
-    skiplist.delete_element(7);
-    skiplist.delete_element(3);
+    // // delete some elements
+    // skiplist.delete_element(7);
+    // skiplist.delete_element(3);
 
-    // two ways to display
-    skiplist.display_list();
+    // // two ways to display
+    // skiplist.display_list();
 
-    skiplist.full_display_list();
+    // skiplist.full_display_list();
 
     return 0;
 }
